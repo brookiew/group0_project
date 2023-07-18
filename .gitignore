@@ -1,0 +1,16 @@
+# Common files and folders to ignore in all projects
+.vscode
+.DS_Store
+**.db
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.exe
+*.dll
+*.obj
+*.o
+
+# Project specific files and folders to ignore
+reports
