@@ -1,0 +1,13 @@
+@startuml CheckoutPayment 
+actor Customer
+boundary "System" as system
+control "Database" as db
+Customer -> system: Checkout
+activate system
+system -> db: set_item_stock(item_id, new_stock)
+activate db
+db --> system: True
+deactivate db
+system -> system: redirect to home page
+deactivate system
+@enduml

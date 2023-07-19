@@ -9,6 +9,9 @@ rectangle "System" as system {
   (View Orders)
   (View Profile)
   (Logout)
+  (Cancel Order)
+  (Refund)
+  (Leave Review)
 }
 Customer --> (Login)
 Customer --> (Register)
@@ -17,4 +20,7 @@ Customer --> (View Items)
 Customer --> (View Orders)
 Customer --> (View Profile)
 Customer --> (Logout)
+Customer --> (Cancel Order)
+Customer --> (Refund)
+Customer --> (Leave Review)
 @enduml
