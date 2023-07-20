@@ -1,0 +1,12 @@
+@startuml packages
+set namespaceSeparator none
+package "authentication" as authentication #aliceblue {
+}
+package "authentication.auth_tools" as authentication.auth_tools #aliceblue {
+}
+package "core.session" as core.session #aliceblue{}
+authentication.auth_tools ..> core.session
+@enduml
+
+
+

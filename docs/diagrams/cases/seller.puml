@@ -1,0 +1,19 @@
+@startuml seller
+left to right direction
+actor Seller
+rectangle "System" as system {
+  (Login)
+  (Register)
+  (View Orders)
+  (View Profile)
+  (Logout)
+  (See Reviews)
+  
+}
+Seller --> (Login)
+Seller --> (Register)
+Seller --> (View Orders)
+Seller --> (View Profile)
+Seller --> (Logout)
+Seller --> (See Reviews)
+@enduml
