@@ -6,9 +6,15 @@
     <div class="col-md-12">
         <h3>Your Order</h3>
         <hr>
+
+        
+        {% for name, count in order.items() %}
+        <p>{{ name }}, quantity: {{ count }} </p>
+        {% endfor %}
         <div class="row">
             <p>{{ total_cost }} </p>
         </div>
+        <a href="/cancel">Cancel Order</a>
     </div>
 </div>
 {% endblock %}
