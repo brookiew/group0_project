@@ -2,7 +2,7 @@
 
 from authentication.auth_tools import login_pipeline, update_passwords, hash_password
 from database.db import Database
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from core.session import Sessions
 
 app = Flask(__name__)
@@ -65,7 +65,7 @@ def login():
         return render_template('home.html', products=products, sessions=sessions)
     else:
         print(f"Incorrect username ({username}) or password ({password}).")
-        return render_template('index.html')
+        return redirect("/login")
 
 
 @app.route('/register')
