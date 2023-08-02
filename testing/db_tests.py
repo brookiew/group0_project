@@ -86,3 +86,70 @@ def test_check_connection_threaded(db: Database = None) -> tuple:
         return False, error
     else:
         return True, "Connection is not single threaded."
+    
+def test_wadi_rum_description(db: Database = None) -> tuple:
+    """
+    Tests that the description of wadi rum is correct.
+
+    args:
+        - db: an sqlite3 database object (optional)
+
+    returns:
+        - error_report: a tuple containing a boolean and a string,
+    """
+    
+    expected_description ="Climb desert dunes to see gorgeous sunsets over Wadi Rum."
+    db = Database("database/store_records.db") if db is None else db
+
+    wadi_rum_hike = [item for item in db.get_full_inventory() if item["item_name"] == "Wadi Rum Hike"][0]
+    actual = wadi_rum_hike["info"]
+    if wadi_rum_hike["info"] != expected_description:
+        error = f"Error in test_wadi_rum_description: descrition does not match.\n  - Actual: {actual}"
+        return False, error
+    else:
+        return True, "description is match."
+    
+def test_petra_description(db: Database = None) -> tuple:
+    """
+    Tests that the description of petra is correct.
+
+    args:
+        - db: an sqlite3 database object (optional)
+
+    returns:
+        - error_report: a tuple containing a boolean and a string,
+    """
+    expected_description ="Visit the the lost city of Petra in all its glory."
+    db = Database("database/store_records.db") if db is None else db
+
+    petra = [item for item in db.get_full_inventory() if item["item_name"] == "Trek to Petra"][0]
+    actual = petra["info"]
+    if petra["info"] != expected_description:
+        error = f"Error in test_petra_description: descrition does not match.\n  - Actual: {actual}"
+        return False, error
+    else:
+        return True, "description is match."
+    
+def test_dana_description(db: Database = None) -> tuple:
+    """
+    Tests that the description of dana is correct.
+
+    args:
+        - db: an sqlite3 database object (optional)
+
+    returns:
+        - error_report: a tuple containing a boolean and a string,
+    """
+    expected_description ="Gaze upon the diverse ecosystems of the Dana Biosphere."
+    db = Database("database/store_records.db") if db is None else db
+
+    dana = [item for item in db.get_full_inventory() if item["item_name"] == "Dana Biosphere Hike"][0]
+    actual = dana["info"]
+    if dana["info"] != expected_description:
+        error = f"Error in test_dana_description: descrition does not match.\n  - Actual: {actual}"
+        return False, error
+    else:
+        return True, "description is match."
+    
+    
+    
