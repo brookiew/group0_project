@@ -136,6 +136,18 @@ def checkout():
 
     return render_template('checkout.html', order=order, sessions=sessions, total_cost=user_session.total_cost)
 
+@app.route('/cancel',methods=['GET'])
+def cancel():
+    user_session=sessions.get_session(username)
+    user_session.empty_cart()
+    user_session.submit_cart()
+   
+
+    return render_template('home.html',products=products,sessions=sessions)
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host=HOST, port=PORT)
