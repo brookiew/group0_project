@@ -2,8 +2,26 @@
 
 ## Tests Reviewed
 
-- **Test Source File:** [tests/auth_tests.py](../../tests/auth_tests.py)
-  - **Test Function Name:** `test_hash_password_generates_salt`
-    - **Date Reviewed:** 07/01/2023
+
+- **Test Source File:** [tests/db_tests.py](../../tests/db_tests.py)
+  - **Test Function Name:** `test_wadi_rum_description`
+    - **Date Reviewed:** 08/03/2023
     - **Comments:**
-      - This only tests whether something is returned, not whether it was generated correctly.
+      - Checks description matches 
+      - returns error tuple 
+
+- **Test Source File:** [tests/db_tests.py](../../tests/db_tests.py)
+  - **Test Function Name:** `test_petra_description`
+    - **Date Reviewed:** 08/03/2023
+    - **Comments:**
+     - tests if petra is correct 
+     - returns tuple 
+
+- **Test Source File:** [tests/db_tests.py](../../tests/db_tests.py)
+  - **Test Function Name:** `test_dana_description`
+    - **Date Reviewed:** 08/03/2023
+    - **Comments:**
+     - tests if dana is correct 
+     - returns error tuple 
+     
+

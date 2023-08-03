@@ -121,3 +121,54 @@ def test_get_session_db() -> tuple:
         return False, error
     else:
         return True, "Session's database is correct."
+    
+def test_add_new_item() -> tuple:
+    """
+    Tests that a new item has been added 
+
+    args:
+        - None
+
+    returns:
+        - error_report: a tuple containing a boolean and a string, 
+          where the boolean is True if the test passed and False if it failed, 
+          and the string is the error report.
+    """
+
+    db = Database("database/store_records.db")
+    sessions = Sessions()
+    sessions.add_new_session("test", db)
+    session = sessions.get_session("test")
+    session.add_new_item(id="test", name="potato",price=4,quantity=1)
+
+    if not session.is_item_in_cart("test"):
+        error = f"Error in test_add_new_item: Item not added.\n  - Expected: {True}\n  - Actual: {False}"
+        return False, error
+    else:
+        return True, "Item has been added."
+    
+def test_empty_cart() -> tuple:
+    """
+    Tests that a cart has been emptied.
+
+    args:
+        - None
+
+    returns:
+        - error_report: a tuple containing a boolean and a string, 
+          where the boolean is True if the test passed and False if it failed, 
+          and the string is the error report.
+    """
+
+    db = Database("database/store_records.db")
+    sessions = Sessions()
+    sessions.add_new_session("test", db)
+    session = sessions.get_session("test")
+    session.add_new_item(id="test", name="potato",price=4,quantity=1)
+    session.empty_cart()
+
+    if session.is_item_in_cart("test"):
+        error = f"Error in test_empty_cart: Item not deleted.\n  - Expected: {False}\n  - Actual: {True}"
+        return False, error
+    else:
+        return True, "Item has been deleted."
