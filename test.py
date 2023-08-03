@@ -2,7 +2,7 @@ from testing.auth_tests import test_hash_password_generates_salt,test_salt_lengt
 from core.utils import generate_unique_id
 from datetime import datetime
 from testing.db_tests import test_init_db, test_dana_description,test_get_inventory_exists, test_dict_factory_link, test_check_connection_threaded, test_wadi_rum_description, test_petra_description 
-from testing.core_tests import test_init_sessions, test_add_new_session, test_get_session
+from testing.core_tests import test_init_sessions, test_add_new_session, test_get_session, test_add_new_item,test_empty_cart
 import os
 
 # -------- Testing Function Constants --------
@@ -21,7 +21,9 @@ DB_FUNCS = [test_init_db, test_get_inventory_exists,
 
 CORE_FUNCS = [test_init_sessions,
               test_add_new_session,
-              test_get_session]
+              test_add_new_item,
+              test_get_session,
+              test_empty_cart]
 
 TESTING_FUNCTIONS = {"core": CORE_FUNCS,
                      "database": DB_FUNCS,
