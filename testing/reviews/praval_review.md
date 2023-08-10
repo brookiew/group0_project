@@ -25,3 +25,10 @@
     - **Date Reviewed:** 08/10/2023
     - **Comments:**
     - Tests session cart emptying, adds items, empties, verifies item absence, ensuring functionality and informative error message in case of failure.
+
+     - **Test Source File:** [tests/core_tests.py](../../tests/core_tests.py)
+  - **Test Function Name:** `test_init_sessions`
+    - **Date Reviewed:** 08/10/2023
+    - **Comments:**
+    - The test ensures correct initialization of the Sessions class by checking if the sessions dictionary is empty, with clear and easy-to-understand code.
+
