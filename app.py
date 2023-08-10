@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 
 from authentication.auth_tools import login_pipeline, update_passwords, hash_password
 from database.db import Database

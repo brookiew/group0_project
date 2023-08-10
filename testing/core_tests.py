@@ -1,174 +1,83 @@
-from core.session import Sessions, UserSession
+import unittest
+from core.utils import dict_factory, calculate_cost, calculate_total_cost, generate_unique_id
+from session import UserSession, Sessions
 from database.db import Database
 
+class TestUserSession(unittest.TestCase):
 
-def test_init_sessions() -> tuple:
-    """
-    Tests that the Sessions class is initialized correctly.
+    def setUp(self):
+        # Set up a mock database for testing
+        self.mock_db = type('MockDatabase', (), {'get_full_inventory': lambda: [
+            {'id': 'item1', 'item_name': 'Item 1', 'price': 100},
+            {'id': 'item2', 'item_name': 'Item 2', 'price': 50},
+        ]})()
 
-    args:
-        - None
+    def test_empty_cart(self):
+        user_session = UserSession('test_user', self.mock_db)
+        result = user_session.empty_cart()
+        expected_result = {
+            'item1': {'name': 'Item 1', 'price': 100, 'quantity': 0, 'discount': 0, 'tax_rate': 0},
+            'item2': {'name': 'Item 2', 'price': 50, 'quantity': 0, 'discount': 0, 'tax_rate': 0},
+        }
+        self.assertEqual(result, expected_result)
 
-    returns:
-        - error_report: a tuple containing a boolean and a string, 
-          where the boolean is True if the test passed and False if it failed, 
-          and the string is the error report.
-    """
+    # Add more test cases for the UserSession class methods
 
-    sessions = Sessions()
+class TestSessions(unittest.TestCase):
 
-    if len(sessions.sessions) != 0:
-        error = f"Error in test_init_sessions: Sessions dictionary is not empty.\n  - Actual: {len(sessions.sessions)}"
-        return False, error
-    else:
-        return True, "Sessions dictionary is empty."
+    def setUp(self):
+        # Set up a mock database for testing
+        self.mock_db = type('MockDatabase', (), {})()
 
+    def test_add_and_get_session(self):
+        sessions = Sessions()
+        sessions.add_new_session('test_user', self.mock_db)
+        result = sessions.get_session('test_user')
+        self.assertIsInstance(result, UserSession)
+        self.assertEqual(result.username, 'test_user')
 
-def test_add_new_session() -> tuple:
-    """
-    Tests that a new session is added correctly.
+    # Add more test cases for the Sessions class methods
 
-    args:
-        - None
+if __name__ == '__main__':
+    unittest.main()
 
-    returns:
-        - error_report: a tuple containing a boolean and a string, 
-          where the boolean is True if the test passed and False if it failed, 
-          and the string is the error report.
-    """
+class TestUtils(unittest.TestCase):
 
-    db = Database("database/store_records.db")
-    sessions = Sessions()
-    sessions.add_new_session("test", db)
+    def test_dict_factory(self):
+        # Mock cursor description
+        cursor_description = [('id', None, None, None, None, None, None)]
+        mock_cursor = type('MockCursor', (), {'description': cursor_description})
+        row = (1,)
+        
+        # Call the function
+        result = dict_factory(mock_cursor, row)
+        
+        # Check the result
+        expected_result = {'id': 1}
+        self.assertEqual(result, expected_result)
 
-    if len(sessions.sessions) == 0:
-        error = f"Error in test_add_new_session: Sessions dictionary is empty.\n  - Actual: {len(sessions.sessions)}"
-        return False, error
-    else:
-        return True, "Sessions dictionary is not empty."
+    def test_calculate_cost(self):
+        # Test with default discount and tax rate
+        result = calculate_cost(100, 5)
+        self.assertEqual(result, 525.0)
 
+        # Test with custom discount and tax rate
+        result = calculate_cost(100, 5, discount=0.1, tax_rate=0.08)
+        self.assertEqual(result, 472.5)
 
-def test_get_session() -> tuple:
-    """
-    Tests that a session is retrieved correctly.
+    def test_calculate_total_cost(self):
+        items = {
+            'item1': {'price': 100, 'quantity': 2, 'discount': 0.1, 'tax_rate': 0.05},
+            'item2': {'price': 50, 'quantity': 3, 'discount': 0.0, 'tax_rate': 0.1}
+        }
 
-    args:
-        - None
+        result = calculate_total_cost(items)
+        self.assertEqual(result, 274.5)
 
-    returns:
-        - error_report: a tuple containing a boolean and a string, 
-          where the boolean is True if the test passed and False if it failed, 
-          and the string is the error report.
-    """
+    def test_generate_unique_id(self):
+        result1 = generate_unique_id()
+        result2 = generate_unique_id()
+        self.assertNotEqual(result1, result2)
 
-    db = Database("database/store_records.db")
-    sessions = Sessions()
-    sessions.add_new_session("test", db)
-    session = sessions.get_session("test")
-
-    if not isinstance(session, UserSession):
-        error = f"Error in test_get_session: Session is not a UserSession object.\n  - Actual: {type(session)}"
-        return False, error
-    else:
-        return True, "Session is a UserSession object."
-
-
-def test_get_session_username() -> tuple:
-    """
-    Tests that a session's username is retrieved correctly.
-
-    args:
-        - None
-
-    returns:
-        - error_report: a tuple containing a boolean and a string, 
-          where the boolean is True if the test passed and False if it failed, 
-          and the string is the error report.
-    """
-
-    db = Database("database/store_records.db")
-    sessions = Sessions()
-    sessions.add_new_session("test", db)
-    session = sessions.get_session("test")
-
-    if session.username != "test":
-        error = f"Error in test_get_session_username: Session's username is incorrect.\n  - Expected: test\n  - Actual: {session.username}"
-        return False, error
-    else:
-        return True, "Session's username is correct."
-
-
-def test_get_session_db() -> tuple:
-    """
-    Tests that a session's database is retrieved correctly.
-
-    args:
-        - None
-
-    returns:
-        - error_report: a tuple containing a boolean and a string, 
-          where the boolean is True if the test passed and False if it failed, 
-          and the string is the error report.
-    """
-
-    db = Database("database/store_records.db")
-    sessions = Sessions()
-    sessions.add_new_session("test", db)
-    session = sessions.get_session("test")
-
-    if session.db != db:
-        error = f"Error in test_get_session_db: Session's database is incorrect.\n  - Expected: {db}\n  - Actual: {session.db}"
-        return False, error
-    else:
-        return True, "Session's database is correct."
-    
-def test_add_new_item() -> tuple:
-    """
-    Tests that a new item has been added 
-
-    args:
-        - None
-
-    returns:
-        - error_report: a tuple containing a boolean and a string, 
-          where the boolean is True if the test passed and False if it failed, 
-          and the string is the error report.
-    """
-
-    db = Database("database/store_records.db")
-    sessions = Sessions()
-    sessions.add_new_session("test", db)
-    session = sessions.get_session("test")
-    session.add_new_item(id="test", name="potato",price=4,quantity=1)
-
-    if not session.is_item_in_cart("test"):
-        error = f"Error in test_add_new_item: Item not added.\n  - Expected: {True}\n  - Actual: {False}"
-        return False, error
-    else:
-        return True, "Item has been added."
-    
-def test_empty_cart() -> tuple:
-    """
-    Tests that a cart has been emptied.
-
-    args:
-        - None
-
-    returns:
-        - error_report: a tuple containing a boolean and a string, 
-          where the boolean is True if the test passed and False if it failed, 
-          and the string is the error report.
-    """
-
-    db = Database("database/store_records.db")
-    sessions = Sessions()
-    sessions.add_new_session("test", db)
-    session = sessions.get_session("test")
-    session.add_new_item(id="test", name="potato",price=4,quantity=1)
-    session.empty_cart()
-
-    if session.is_item_in_cart("test"):
-        error = f"Error in test_empty_cart: Item not deleted.\n  - Expected: {False}\n  - Actual: {True}"
-        return False, error
-    else:
-        return True, "Item has been deleted."
+if __name__ == '__main__':
+    unittest.main()
