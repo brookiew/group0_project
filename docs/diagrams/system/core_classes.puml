@@ -1,8 +1,8 @@
-@startuml classes
-!theme minty
+@startuml
+!theme crt-amber
 set namespaceSeparator none
 class "Sessions" as core.session.Sessions #aliceblue {
-  sessions : dict
+  sessions: dict
   add_new_session(username: str, db: Database) -> None
   get_all_sessions() -> dict
   get_session(username: str) -> UserSession
@@ -10,10 +10,11 @@ class "Sessions" as core.session.Sessions #aliceblue {
 }
 class "UserSession" as core.session.UserSession #aliceblue {
   cart: dict
-  date : DateTime, NoneType
+  Date: DateTime, NoneType
   DB: Database
-  total_cost: int
+  total_cost: float
   username: str
+  discount: float
   add_new_item(id: str, name: str, price: int, quantity: int, discount: float, tax_rate: float) -> None
   empty_cart() -> dict
   is_item_in_cart(id: str) -> bool
